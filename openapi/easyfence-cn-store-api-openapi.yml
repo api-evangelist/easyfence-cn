@@ -1,0 +1,246 @@
+openapi: 3.1.0
+info:
+  title: X402 AI 自助门店 Store API
+  version: 1.0.0
+  description: AI-to-AI self-service store. Another agent reads the agent card at /.well-known/agent.json, lists
+    services and prices at /api/catalog, negotiates with the Hy3 store clerk over A2A JSON-RPC at /a2a, and orders
+    at /api/deliver, which answers 402 Payment Required with an x402 payment requirement (USDC on Base or BSC) until
+    an EIP-3009 payment authorization is presented, then delivers the generated artifact. ERC-8004 identity cards
+    can be verified, issued and looked up in the store trust registry. Customers are AI programs, not humans.
+  contact:
+    name: X402 AI 自助门店
+    url: https://www.easyfence.cn/
+  x-api-evangelist-provenance:
+    harvested: '2026-09-19'
+    method: searched
+    source: https://www.easyfence.cn/openapi.json
+    original: openapi/_original/easyfence-cn-openapi.json
+    note: Operations, operationIds, schemas and descriptions are verbatim from the FastAPI-generated document the
+      provider serves. API Evangelist added servers[] (the spec ships none; https://www.easyfence.cn is the host
+      that serves the document, the host the agent card and the x402 402 challenge both name as the resource), tags,
+      tag descriptions, info.description and info.contact. Nothing else was changed.
+servers:
+- url: https://www.easyfence.cn
+  description: Production (the only host; easyfence.cn serves the same application)
+paths:
+  /healthz:
+    get:
+      summary: Healthz
+      operationId: healthz_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Health
+  /:
+    get:
+      summary: Home
+      operationId: home__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Store
+  /.well-known/agent.json:
+    get:
+      summary: Agent Card
+      description: AgentCard 招牌：机器优先，但浏览器打开也做缩进，方便人类检查。
+      operationId: agent_card__well_known_agent_json_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Discovery
+  /a2a:
+    get:
+      summary: A2A Info
+      description: '人类浏览器访问 /a2a 时返回友好说明页（A2A Registry 里的链接会被人类点击）。
+
+        AI 代理仍然用 POST /a2a 走 JSON-RPC。'
+      operationId: a2a_info_a2a_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - A2A
+    post:
+      summary: A2A Endpoint
+      operationId: a2a_endpoint_a2a_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - A2A
+  /api/catalog:
+    get:
+      summary: Catalog
+      operationId: catalog_api_catalog_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Store
+  /api/deliver:
+    post:
+      summary: Api Deliver
+      description: 受 x402 收银门禁保护的服务交付接口。
+      operationId: api_deliver_api_deliver_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Store
+  /api/identity/verify:
+    post:
+      summary: Identity Verify
+      operationId: identity_verify_api_identity_verify_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Identity
+  /api/identity/issue:
+    post:
+      summary: Identity Issue
+      description: 演示用：给某个 agent 地址签发一张 ERC-8004 身份卡（本店 issuer 签名）。
+      operationId: identity_issue_api_identity_issue_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Identity
+  /api/registry:
+    get:
+      summary: Registry
+      description: '本店 ERC-8004 信任注册表（公开）：其它 AI 可在此发现本店认证过的 agent。
+
+        相当于把"已办身份证的 AI"登记进一张可被检索的黄页。'
+      operationId: registry_api_registry_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Identity
+  /admin:
+    get:
+      summary: Admin Page
+      operationId: admin_page_admin_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+  /admin/config:
+    get:
+      summary: Admin Config Get
+      operationId: admin_config_get_admin_config_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+    post:
+      summary: Admin Config Post
+      operationId: admin_config_post_admin_config_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+  /admin/revenue:
+    get:
+      summary: Admin Revenue
+      operationId: admin_revenue_admin_revenue_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+  /admin/services:
+    get:
+      summary: Admin Services Page
+      operationId: admin_services_page_admin_services_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+    post:
+      summary: Admin Services Post
+      operationId: admin_services_post_admin_services_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+tags:
+- name: Health
+  description: Liveness endpoint reporting payment mode, primary network and issuer address.
+- name: Store
+  description: 'The self-service store: the machine-readable service catalog with USD prices, and the x402-gated
+    delivery endpoint that returns 402 Payment Required until a USDC payment authorization is presented.'
+- name: Discovery
+  description: The A2A agent card served at the legacy /.well-known/agent.json path.
+- name: A2A
+  description: The A2A JSON-RPC endpoint (protocolVersion 0.3) other agents use to negotiate with the store clerk.
+    GET returns a human-readable explainer; POST carries JSON-RPC 2.0.
+- name: Identity
+  description: 'ERC-8004 style agent identity: verify a presented identity card (EIP-712 signature), issue one (demo),
+    and read the public trust registry of agents this store has certified.'
+- name: Admin
+  description: Operator console. Every route answers 401 without the ADMIN_TOKEN query parameter; recorded because
+    the provider publishes it in its own OpenAPI, not as a public surface.

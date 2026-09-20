@@ -1,0 +1,66 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://www.easyfence.cn/
+signals: {}
+note: >-
+  No horizontal regulatory signal is published. The site is a single FastAPI application with a home
+  page, an A2A explainer, a token-gated admin console and the machine endpoints; there is no legal,
+  privacy, terms, accessibility, security or transparency page at all - every conventional path below
+  returned the FastAPI {"detail":"Not Found"} 404, and the home page and agent card link to none. The
+  operator is identified only as the store name; no company registration, contact address, ICP filing
+  number or operator identity appears on the site (a .cn domain with no visible ICP 备案 notice is itself
+  worth noting). An empty signals map is the measurement, not a gap in the probe.
+probed_absent:
+- signal: sbom
+  urls:
+  - {url: 'https://www.easyfence.cn/security/sbom', status: 404}
+  note: Never derived - search only.
+- signal: accessibility_conformance
+  urls:
+  - {url: 'https://www.easyfence.cn/accessibility', status: 404}
+  - {url: 'https://www.easyfence.cn/accessibility/vpat', status: 404}
+- signal: subprocessors
+  urls:
+  - {url: 'https://www.easyfence.cn/legal/subprocessors', status: 404}
+  - {url: 'https://www.easyfence.cn/legal', status: 404}
+- signal: data_subject_request
+  urls:
+  - {url: 'https://www.easyfence.cn/privacy/requests', status: 404}
+  - {url: 'https://www.easyfence.cn/privacy', status: 404}
+  - {url: 'https://www.easyfence.cn/legal/dpa', status: 404}
+- signal: data_residency
+  urls:
+  - {url: 'https://www.easyfence.cn/docs/data-residency', status: 404}
+  note: The host resolves to 156.233.232.132 with myhostadmin.net nameservers; an inferred hosting location is not a published commitment and is not recorded as one.
+- signal: incident_notification
+  urls:
+  - {url: 'https://www.easyfence.cn/legal/dpa', status: 404}
+- signal: ai_transparency
+  urls:
+  - {url: 'https://www.easyfence.cn/ai/transparency', status: 404}
+  note: The deliverables are LLM-generated (the site names Hy3 as the clerk/generator) but no model card, usage policy or AI transparency statement is published.
+- signal: training_data_summary
+  urls:
+  - {url: 'https://www.easyfence.cn/ai/transparency', status: 404}
+- signal: transparency_report
+  urls:
+  - {url: 'https://www.easyfence.cn/transparency', status: 404}
+- signal: notice_and_action
+  urls:
+  - {url: 'https://www.easyfence.cn/legal/report-content', status: 404}
+- signal: global_privacy_control
+  urls:
+  - {url: 'https://www.easyfence.cn/privacy', status: 404}
+  note: No privacy statement exists to make a GPC commitment; honored is not set from a header probe.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://www.easyfence.cn/changelog', status: 404}
+  note: No versioning or support-period page (lifecycle/easyfence-cn-lifecycle.yml).
+- signal: age_assurance
+  urls:
+  - {url: 'https://www.easyfence.cn/terms', status: 404}
+  note: The provider states customers are AI programs, not humans; no age signal exists or would apply.
+- signal: exit_assistance
+  urls:
+  - {url: 'https://www.easyfence.cn/terms', status: 404}

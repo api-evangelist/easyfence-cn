@@ -1,0 +1,104 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the X402 AI 自助门店 Store API
+  version: 1.0.0
+extends: ../openapi/easyfence-cn-store-api-openapi.yml
+x-generated: '2026-09-19'
+x-method: derived
+x-source: >-
+  Derived from openapi/easyfence-cn-store-api-openapi.yml plus the live probes recorded in
+  conventions/, errors/, authentication/ and plans/. Captures what the provider's FastAPI-generated
+  contract leaves out - the request body and the 402 / 400 responses on /api/deliver, the JSON-RPC nature
+  of /a2a, the admin gate - without mutating the provider's document.
+actions:
+- target: $.info
+  description: Link the provider's own machine-readable discovery surface and API Evangelist's runtime findings from the contract.
+  update:
+    x-agent-card: https://www.easyfence.cn/.well-known/agent.json
+    x-service-catalog: https://www.easyfence.cn/api/catalog
+    x-payment-scheme: x402 (USDC on Base chainId 8453 and BSC chainId 56; payment_mode mainnet-real)
+    x-conventions: conventions/easyfence-cn-conventions.yml
+    x-error-catalog: errors/easyfence-cn-problem-types.yml
+    x-plans: plans/easyfence-cn-plans-pricing.yml
+- target: $.paths['/api/deliver'].post
+  description: >-
+    Add the request body the x402 bazaar extension in the live 402 challenge declares (the contract
+    declares none), and the 402 / 400 responses observed on 2026-09-19.
+  update:
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [service, params]
+            properties:
+              service: {type: string, description: 'Service id; full list in /.well-known/agent.json and /api/catalog'}
+              params:
+                type: object
+                required: [brief]
+                properties:
+                  brief: {type: string, description: The buyer AI's requirement description}
+              buyer_agent: {type: string, description: 'Optional: buyer AI identifier'}
+    responses:
+      '402':
+        description: x402 Payment Required. accepts[] lists the USDC payment requirements (Base and BSC); sign an EIP-3009 authorization and retry within maxTimeoutSeconds.
+        headers:
+          accept: {schema: {type: string, enum: [exact]}, description: The x402 scheme the resource accepts}
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                x402Version: {type: integer}
+                error: {type: string}
+                accepts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      scheme: {type: string}
+                      network: {type: string}
+                      chainId: {type: integer}
+                      maxAmountRequired: {type: string}
+                      resource: {type: string, format: uri}
+                      description: {type: string}
+                      mimeType: {type: string}
+                      payTo: {type: string}
+                      maxTimeoutSeconds: {type: integer}
+                      asset: {type: string}
+                      facilitator: {type: string, format: uri}
+      '400':
+        description: Unknown service id; the body lists every valid id in known[].
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error: {type: string}
+                known: {type: array, items: {type: string}}
+    x-side-effect: paid, irreversible (no refund or cancel operation exists)
+    x-idempotency: none documented
+- target: $.paths['/a2a'].post
+  description: Record that this is an A2A JSON-RPC 2.0 endpoint whose only documented method is tasks/send, and that errors arrive over HTTP 400.
+  update:
+    x-protocol: A2A 0.3 over JSON-RPC 2.0
+    x-methods-documented: [tasks/send]
+    x-methods-refused: [tasks/get, tools/list, any other -> -32601]
+    responses:
+      '400':
+        description: JSON-RPC 2.0 error object (e.g. -32601 method not found) returned over HTTP 400.
+- target: $.paths['/api/identity/verify'].post
+  description: Failure is signalled in the body, not the status.
+  update:
+    x-failure-signal: 'HTTP 200 with {"ok": false, "reason": "<message>"}'
+- target: $.paths['/admin'].get
+  description: Token gate observed live.
+  update:
+    responses:
+      '401':
+        description: 'HTML hint: visit /admin?token=ADMIN_TOKEN. Operator console, not a public surface.'
+- target: $.paths['/api/catalog'].get
+  description: Document the observed response shape (the contract declares an empty schema).
+  update:
+    x-response-shape: '{services: [{id, name, desc, price_usd}], payment: {scheme: x402, primary, enabled_networks[], assets{network: address}, payTo}}'

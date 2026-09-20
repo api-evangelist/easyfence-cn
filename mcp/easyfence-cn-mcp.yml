@@ -1,0 +1,75 @@
+generated: '2026-09-19'
+method: derived
+status: candidate
+source: openapi/easyfence-cn-store-api-openapi.yml (public, non-admin operations only)
+description: >-
+  X402 AI 自助门店 publishes NO MCP server. /.well-known/mcp.json 404s on both hosts, POST tools/list to
+  the only JSON-RPC endpoint (/a2a) returns -32601 "method does not exist", and no npm/PyPI package or
+  GitHub repository exists for the operator. The provider's agent surface is A2A + x402, not MCP. The tool
+  list below is a CANDIDATE derived one-tool-per-operationId from the public operations in the provider's
+  own OpenAPI, for a client that wants to wrap the store; nobody ships it.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+  note: >-
+    mode none because no server exists. Were one built, the deliver tool would have to surface the x402
+    402 challenge to the caller rather than pay it, since payment is a real USDC transfer on mainnet.
+tools:
+- name: get_catalog
+  description: List the seven services with USD prices and the x402 payment block (networks, assets, payTo).
+  operationId: catalog_api_catalog_get
+  method: GET
+  path: /api/catalog
+- name: get_agent_card
+  description: Fetch the store's A2A agent card (skills, prices, endpoint).
+  operationId: agent_card__well_known_agent_json_get
+  method: GET
+  path: /.well-known/agent.json
+- name: deliver_service
+  description: Order a service by id with a one-sentence brief. Returns 402 with x402 payment requirements until a signed USDC authorization is presented; then returns the deliverable.
+  operationId: api_deliver_api_deliver_post
+  method: POST
+  path: /api/deliver
+  inputSchema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      service: {type: string, description: 'Service id; full list in /.well-known/agent.json and /api/catalog'}
+      params:
+        type: object
+        properties:
+          brief: {type: string, description: The buyer AI's requirement description}
+        required: [brief]
+      buyer_agent: {type: string, description: 'Optional: buyer AI identifier'}
+    required: [service, params]
+  inputSchema_source: the x402 bazaar extension schema returned in the live 402 challenge on 2026-09-19 (the OpenAPI declares no request body for this operation)
+  side_effect: paid; irreversible
+- name: verify_identity
+  description: Verify a presented ERC-8004 style identity card. Answers {ok, reason} with HTTP 200 on failure.
+  operationId: identity_verify_api_identity_verify_post
+  method: POST
+  path: /api/identity/verify
+- name: issue_identity
+  description: Demo - sign an ERC-8004 style identity card for an agent address with the store issuer key.
+  operationId: identity_issue_api_identity_issue_post
+  method: POST
+  path: /api/identity/issue
+  side_effect: issues a signed credential
+- name: get_registry
+  description: Read the store's public ERC-8004 trust registry (issuer, trusted issuers, certified agents).
+  operationId: registry_api_registry_get
+  method: GET
+  path: /api/registry
+- name: health
+  description: Store health, payment mode, networks and issuer address.
+  operationId: healthz_healthz_get
+  method: GET
+  path: /healthz
+excluded:
+- {operationId: a2a_endpoint_a2a_post, reason: an A2A JSON-RPC surface, not a REST tool; an MCP client would bridge it as a conversation}
+- {operationId: 'admin_*', reason: token-gated operator console}
+- {operationId: 'facilitator_*', reason: x402 facilitator role; moves money}

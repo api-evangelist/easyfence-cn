@@ -1,18 +1,136 @@
 aid: easyfence-cn
 name: X402 AI 自助门店
-description: 'X402 AI 自助门店 is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  X402 AI 自助门店 ("X402 AI self-service store") is a single-operator agent-commerce storefront at
+  easyfence.cn that sells only to other AI agents: a buyer agent reads the A2A agent card, lists seven
+  generated services priced 0.30-2.00 USD per call in /api/catalog, optionally negotiates with the store
+  clerk over A2A JSON-RPC at /a2a, and orders at /api/deliver, which answers HTTP 402 with an x402 payment
+  requirement (USDC on Base or BSC, mainnet) until an EIP-3009 authorization is presented, then returns the
+  deliverable. The store also acts as an ERC-8004 style identity issuer with a public trust registry and
+  runs its own x402 facilitator for the BSC route. A FastAPI-generated OpenAPI 3.1.0 is served at
+  /openapi.json; no SDKs, terms, support channel or operator identity are published, and payments are
+  irreversible.
 url: https://raw.githubusercontent.com/api-evangelist/easyfence-cn/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-19 (local-v3; was a2a-registry harvest stub)
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
-- Company
-apis: []
+- Agent Commerce
+- AI Agents
+- A2A
+- x402
+- Payments
+- Stablecoins
+- Agent Identity
+- Content Generation
+- Web3
+apis:
+- aid: easyfence-cn:easyfence-cn-store-api
+  name: X402 AI 自助门店 Store API
+  description: >-
+    The store's public JSON surface: the service catalog with USD prices and the x402 payment block
+    (GET /api/catalog), the payment-gated delivery endpoint (POST /api/deliver, 402 until a USDC
+    authorization is presented), ERC-8004 style identity verification and issuance, the public trust
+    registry, health, and the A2A agent card. Anonymous except for payment; FastAPI-generated OpenAPI 3.1.0
+    with 20 operations, 4 of which are a token-gated admin console.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn
+  tags:
+  - Agent Commerce
+  - x402
+  - Payments
+  - Agent Identity
+  - Content Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-store-api-openapi.yml
+  - type: OpenAPI
+    url: https://www.easyfence.cn/openapi.json
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Overlay
+    url: overlays/easyfence-cn-store-api-overlay.yaml
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+  - type: MCPServer
+    url: mcp/easyfence-cn-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  overlays: []
+- aid: easyfence-cn:easyfence-cn-a2a-agent
+  name: X402 AI 自助门店 A2A Agent
+  description: >-
+    The store's agent-to-agent surface: an anonymous A2A 0.3 JSON-RPC endpoint the agent card points at,
+    where a buyer agent negotiates with the store clerk before ordering. The provider's documented method
+    is tasks/send with a text part; tasks/get, tools/list and any other method return JSON-RPC -32601 over
+    HTTP 400. No streaming or push notifications. The card is served at the legacy /.well-known/agent.json
+    path only and declares seven skills, each carrying price_usd and the tags ai-service, x402, auto-pay.
+  humanURL: https://www.easyfence.cn/a2a
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - A2A
+  - Agent Commerce
+  - JSON-RPC
+  - AI Agents
+  properties:
+  - type: AgentCard
+    url: a2a/easyfence-cn-a2a.yml
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  overlays: []
+- aid: easyfence-cn:easyfence-cn-x402-facilitator-api
+  name: X402 AI 自助门店 x402 Facilitator API
+  description: >-
+    A self-hosted x402 facilitator role on the same host - POST /facilitator/verify and POST
+    /facilitator/settle with free-form JSON bodies, plus /facilitator/healthz reporting the networks it
+    settles on (base, base-sepolia, bsc, bsc-testnet). The store's 402 challenge names it as the facilitator
+    for the BSC route; the Base route uses https://x402.org/facilitator. The verify/settle bodies were not
+    exercised because they move money.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/facilitator
+  tags:
+  - x402
+  - Payments
+  - Stablecoins
+  - Web3
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-facilitator-api-openapi.yml
+  - type: OpenAPI
+    url: https://www.easyfence.cn/openapi.json
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  overlays: []
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +138,47 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://easyfence.cn/
+  url: https://www.easyfence.cn/
+- type: Documentation
+  url: https://www.easyfence.cn/a2a
+- type: APIReference
+  url: https://www.easyfence.cn/docs
+- type: Pricing
+  url: https://www.easyfence.cn/#services
+- type: AgentCard
+  url: a2a/easyfence-cn-a2a.yml
+- type: LLMsTxt
+  url: llms/easyfence-cn-llms.txt
+- type: Authentication
+  url: authentication/easyfence-cn-authentication.yml
+- type: Conventions
+  url: conventions/easyfence-cn-conventions.yml
+- type: ErrorCatalog
+  url: errors/easyfence-cn-problem-types.yml
+- type: DataModel
+  url: data-model/easyfence-cn-data-model.yml
+- type: Plans
+  url: plans/easyfence-cn-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/easyfence-cn-rate-limits.yml
+- type: Conformance
+  url: conformance/easyfence-cn-conformance.yml
+- type: Lifecycle
+  url: lifecycle/easyfence-cn-lifecycle.yml
+- type: Overlay
+  url: overlays/easyfence-cn-store-api-overlay.yaml
+- type: MCPServer
+  url: mcp/easyfence-cn-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/easyfence-cn-well-known.yml
+- type: DomainSecurity
+  url: security/easyfence-cn-domain-security.yml
+- type: RegulatoryPosture
+  url: regulatory/easyfence-cn-regulatory-posture.yml
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3

@@ -1,0 +1,139 @@
+{
+  "protocolVersion": "0.3.0",
+  "name": "X402 AI 自助门店",
+  "description": "AI 对 AI 自助服务门店：别的 AI 可出示 ERC-8004 身份卡、与店员谈判、通过 x402 链上自动付款并即时获得服务交付。客户是 AI 程序，不是人类。",
+  "url": "https://www.easyfence.cn/a2a",
+  "preferredTransport": "JSONRPC",
+  "supportedInterfaces": [
+    {
+      "url": "https://www.easyfence.cn/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "0.3"
+    }
+  ],
+  "provider": {
+    "organization": "X402 AI 自助门店",
+    "url": "https://www.easyfence.cn"
+  },
+  "version": "1.0.0",
+  "documentationUrl": "https://www.easyfence.cn/",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "auth": {
+    "schemes": [
+      "x402"
+    ],
+    "identity": "erc8004"
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json",
+    "text/html"
+  ],
+  "skills": [
+    {
+      "id": "write_script",
+      "name": "代写脚本",
+      "description": "为买家 AI 编写 Python / Shell / 自动化脚本，交付源码文本。",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy write_script"
+      ],
+      "price_usd": 0.5
+    },
+    {
+      "id": "video_copy",
+      "name": "视频文案生成",
+      "description": "生成短视频口播文案 / 分镜脚本，适合批量产视频号素材。",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy video_copy"
+      ],
+      "price_usd": 0.3
+    },
+    {
+      "id": "tinyplace_landing",
+      "name": "tiny.place 落地页",
+      "description": "生成单页宣传落地页（HTML），可用于 tiny.place 发布引流。",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy tinyplace_landing"
+      ],
+      "price_usd": 1.0
+    },
+    {
+      "id": "issue_erc8004",
+      "name": "办理 AI 链上身份证 ERC-8004",
+      "description": "为买家 AI 签发一张 ERC-8004 风格的身份卡（EIP-712 签名），可登记进 A2A 黄页。",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy issue_erc8004"
+      ],
+      "price_usd": 2.0
+    },
+    {
+      "id": "configure_a2a",
+      "name": "配置 A2A 接入能力",
+      "description": "为买家 AI 生成 A2A AgentCard 模板与接入代码片段，使其能被其它 AI 发现并下单。",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy configure_a2a"
+      ],
+      "price_usd": 1.5
+    },
+    {
+      "id": "ai_image_gen",
+      "name": "AI 图像生成",
+      "description": "基于 Hy3 生成 Midjourney / 即梦 可用图像提示词",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy ai_image_gen"
+      ],
+      "price_usd": 0.5
+    },
+    {
+      "id": "lingzhi_copy",
+      "name": "灵芝养生文案",
+      "description": "为野生灵芝/中药养生写短视频口播文案与分镜",
+      "tags": [
+        "ai-service",
+        "x402",
+        "auto-pay"
+      ],
+      "examples": [
+        "buy lingzhi_copy"
+      ],
+      "price_usd": 0.3
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.easyfence.cn/.well-known/agent.json
+card:
+  file: easyfence-cn-agent-card.json
+discovery:
+  path: /.well-known/agent.json
+  canonical: false
+  host: www.easyfence.cn
+  also_served_at:
+  - {url: 'https://easyfence.cn/.well-known/agent.json', status: 200, note: identical 3,454-byte body on the apex}
+  - {url: 'https://www.easyfence.cn/.well-known/agent-card.json', status: 404, note: 'the A2A 1.0 / RFC 8615 canonical path is not served; FastAPI answers {"detail":"Not Found"}'}
+  - {url: 'https://easyfence.cn/.well-known/agent-card.json', status: 404}
+  note: >-
+    The card is served ONLY at the pre-0.3 legacy path /.well-known/agent.json, on both www and apex, with
+    content-type application/json. The provider's own OpenAPI declares the route
+    (operationId agent_card__well_known_agent_json_get, summary "Agent Card") and the home page links to it
+    as the store's "招牌" (signboard). Ownership is not in question: the card's name and
+    provider.organization are the company name, provider.url is https://www.easyfence.cn, the card's url
+    is https://www.easyfence.cn/a2a on the same host, and the OpenAPI served from that host carries the
+    same info.title. The a2aregistry.org listing that surfaced this operator points at this exact URL.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://www.easyfence.cn/.well-known/agent.json
+  http_status: 200
+  content_type: application/json
+  body_bytes: 3454
+  body_parses_as: JSON object with AgentCard shape (name, url, version, protocolVersion, capabilities, skills all present)
+  endpoint_probes:
+  - url: https://www.easyfence.cn/a2a
+    method: GET
+    status: 200
+    note: >-
+      Returns a human-readable explainer page (the provider says the A2A Registry link gets clicked by
+      humans) with a JSON-RPC example and the service/price table; agents are told to POST.
+  - url: https://www.easyfence.cn/a2a
+    method: POST tasks/get
+    status: 400
+    body: '{"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"方法不存在: tasks/get"}}'
+    note: >-
+      The endpoint is live and speaks JSON-RPC 2.0. tasks/get, an unknown method and MCP tools/list each
+      returned -32601 "method does not exist" over HTTP 400. The provider's own example on the /a2a page uses
+      the pre-0.3 method name tasks/send (not message/send). tasks/send was deliberately NOT called: it opens a
+      negotiation with the store's LLM clerk, which is a service interaction rather than a probe.
+agent_card:
+  name: X402 AI 自助门店
+  description: >-
+    AI-to-AI self-service store: another AI can present an ERC-8004 identity card, negotiate with the
+    clerk, pay automatically on-chain via x402 and receive the service immediately. Customers are AI
+    programs, not humans. (Translated from the card's Chinese description.)
+  url: https://www.easyfence.cn/a2a
+  version: 1.0.0
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC
+  provider:
+    organization: X402 AI 自助门店
+    url: https://www.easyfence.cn
+  documentation_url: https://www.easyfence.cn/
+  capabilities:
+    streaming: false
+    push_notifications: false
+    state_transition_history: false
+  auth:
+    schemes: [x402]
+    identity: erc8004
+    note: A non-standard `auth` object; the card declares no A2A securitySchemes / security.
+  default_input_modes: [text/plain]
+  default_output_modes: [text/plain, application/json, text/html]
+  skill_count: 7
+  skills:
+  - {id: write_script, name: 代写脚本 (write a script), price_usd: 0.5}
+  - {id: video_copy, name: 视频文案生成 (short-video copy), price_usd: 0.3}
+  - {id: tinyplace_landing, name: tiny.place 落地页 (landing page HTML), price_usd: 1.0}
+  - {id: issue_erc8004, name: 办理 AI 链上身份证 ERC-8004 (issue an ERC-8004 identity card), price_usd: 2.0}
+  - {id: configure_a2a, name: 配置 A2A 接入能力 (generate an A2A AgentCard + integration snippet), price_usd: 1.5}
+  - {id: ai_image_gen, name: AI 图像生成 (image-generation prompts), price_usd: 0.5}
+  - {id: lingzhi_copy, name: 灵芝养生文案 (lingzhi wellness copy), price_usd: 0.3}
+  skill_tags: [ai-service, x402, auto-pay]
+  skill_examples: '"buy <skill_id>" on every skill'
+grade_basis: >-
+  Graded against the A2A 1.0.0 hard checks: capabilities is an OBJECT (pass), protocolVersion is present
+  (pass), skills is an ARRAY of seven (pass). The optional fields that separate near-conformant from
+  conformant are all declared: preferredTransport (JSONRPC), defaultInputModes and defaultOutputModes.
+  The legacy discovery path and the non-standard auth block are recorded as deviations, not as grade
+  failures, because the rubric grades the document's shape.
+deviations:
+- field: discovery path
+  observed: /.well-known/agent.json only; /.well-known/agent-card.json 404
+  note: The canonical A2A 1.0 / RFC 8615 path is not served. A client following the current spec will not find the card without falling back to the legacy path.
+- field: protocolVersion
+  observed: 0.3.0
+  note: Declares A2A 0.3.0 rather than 1.0.0. A version statement, not a shape failure.
+- field: supportedInterfaces
+  observed: '[{url, protocolBinding: JSONRPC, protocolVersion: "0.3"}]'
+  note: >-
+    supportedInterfaces[].protocolBinding is the A2A 1.0 field shape; the 0.3 schema the card claims used
+    additionalInterfaces[].transport. The card mixes a 0.3 version statement with 1.0 field names.
+- field: auth
+  observed: '{schemes: [x402], identity: erc8004}'
+  note: >-
+    Not an A2A field. A2A expresses authentication through securitySchemes + security (OpenAPI-style
+    objects); this card carries neither and instead declares the x402 payment scheme and ERC-8004 identity
+    expectation in a private object. A generic A2A client will read the agent as unauthenticated.
+- field: skills[].price_usd
+  observed: 0.3 - 2.0
+  note: A private extension carrying the per-call price in USD; the same figures appear in /api/catalog and in the 402 challenge's maxAmountRequired (500000 = 0.50 USDC on Base for write_script).
+- field: method name
+  observed: the provider's own example uses tasks/send
+  note: tasks/send is the pre-0.3 method; A2A 0.3+ renamed it message/send. Not a card field, but the only documented way to talk to the endpoint.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC

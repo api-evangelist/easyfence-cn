@@ -1,0 +1,18 @@
+generated: '2026-09-19'
+method: generated
+source: >-
+  openapi/easyfence-cn-store-api-openapi.yml (every operationId verified against the provider's
+  openapi.json) plus the /a2a explainer page and the live 402 / registry responses of 2026-09-19. No
+  provider-published skills, AGENTS.md or llms.txt exist (all probed 404).
+skills:
+- file: easyfence-cn-buy-service-x402.md
+  name: easyfence-cn-buy-service-x402
+  method: generated
+  description: Discover a service in the catalog, preview its x402 price from the 402 challenge, and only then pay and collect the deliverable.
+  operations: 4
+- file: easyfence-cn-verify-erc8004-identity.md
+  name: easyfence-cn-verify-erc8004-identity
+  method: generated
+  description: Check the store's ERC-8004 trust registry and verify a presented identity card before trusting an agent that claims the store certified it.
+  operations: 3
+provider_published: []

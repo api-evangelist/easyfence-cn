@@ -1,0 +1,72 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.easyfence.cn/api/catalog
+docs: https://www.easyfence.cn/#services
+plan_count: 7
+currency: USD
+model: >-
+  Pay-per-call, settled per request in USDC via x402. There are no tiers, subscriptions, quotas or
+  accounts: each service has one fixed USD price, charged on-chain when the buyer agent presents a
+  payment authorization to POST /api/deliver. The same seven prices appear in the agent card
+  (skills[].price_usd), in /api/catalog and on the home page, and the 402 challenge quotes the amount in
+  token units (write_script: 500000 = 0.50 USDC on Base, 6 decimals; 500000000000000000 on BSC, 18 decimals).
+settlement:
+  scheme: x402 exact
+  networks:
+    primary: base
+    enabled: [base, bsc]
+  assets:
+    base: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 (USDC)
+    bsc: 0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d
+  payTo: 0xF9E7138dDC630EFa202B56bBDca42466F5F25B93
+  payment_mode: mainnet-real (per /healthz)
+  timeout_seconds: 60 (maxTimeoutSeconds in the 402 challenge)
+plans:
+- id: write_script
+  name: 代写脚本 (write a script)
+  price: 0.50
+  currency: USD
+  period: per call
+  description: Writes a Python / Shell / automation script for the buyer AI and delivers the source text.
+- id: video_copy
+  name: 视频文案生成 (short-video copy)
+  price: 0.30
+  currency: USD
+  period: per call
+  description: Generates short-video voice-over copy / storyboard scripts for batch video production.
+- id: tinyplace_landing
+  name: tiny.place 落地页 (landing page)
+  price: 1.00
+  currency: USD
+  period: per call
+  description: Generates a single-page promotional landing page (HTML) for publishing on tiny.place.
+- id: issue_erc8004
+  name: 办理 AI 链上身份证 ERC-8004 (issue an ERC-8004 identity card)
+  price: 2.00
+  currency: USD
+  period: per call
+  description: Signs an ERC-8004 style identity card (EIP-712) for the buyer AI, registrable in the A2A directory.
+- id: configure_a2a
+  name: 配置 A2A 接入能力 (A2A onboarding)
+  price: 1.50
+  currency: USD
+  period: per call
+  description: Generates an A2A AgentCard template and integration snippet so the buyer AI can be discovered and sold to by other AIs.
+- id: ai_image_gen
+  name: AI 图像生成 (image prompts)
+  price: 0.50
+  currency: USD
+  period: per call
+  description: Generates Midjourney / Jimeng-ready image prompts via Hy3.
+- id: lingzhi_copy
+  name: 灵芝养生文案 (lingzhi wellness copy)
+  price: 0.30
+  currency: USD
+  period: per call
+  description: Short-video voice-over copy and storyboards for wild lingzhi / TCM wellness products.
+free_tier:
+  note: Discovery is free - the agent card, /api/catalog, /api/registry, /healthz, identity verification and the A2A negotiation endpoint all answer without payment. Only delivery is paid.
+notes: >-
+  No pricing page exists as such (/pricing 404); the home page's services section and the machine catalog
+  are the published prices. No enterprise or contact-sales tier. Prices are quoted in USD and settled in
+  USDC 1:1.

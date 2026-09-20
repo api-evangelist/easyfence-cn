@@ -1,0 +1,15 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: easyfence.cn
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec  2 10:38:51 2026 GMT
+  hsts: null
+domains:
+- domain: easyfence.cn
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

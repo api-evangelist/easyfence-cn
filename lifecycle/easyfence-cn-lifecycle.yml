@@ -1,0 +1,50 @@
+generated: '2026-09-19'
+method: probed
+source:
+- https://www.easyfence.cn/openapi.json (info.version, no deprecated flags)
+- https://www.easyfence.cn/healthz
+- https://www.easyfence.cn/facilitator/healthz
+- https://www.easyfence.cn/.well-known/agent.json (version 1.0.0)
+- probed absent: /changelog, /status, /pricing, /terms, /privacy, /legal (all 404)
+description: >-
+  A single-operator store with no published lifecycle surface. There is no versioning scheme beyond
+  info.version 1.0.0, no deprecation policy, no changelog, no status page, no SLA and no terms of
+  service; the only operational signal is a pair of unauthenticated health endpoints. Every absence
+  below was probed on 2026-09-19.
+versioning:
+  scheme: none published
+  current_version: 1.0.0
+  mechanism: null
+  evidence: openapi info.version "1.0.0" and agent card version "1.0.0"; no version segment in any path, no version header, no supportedInterfaces version beyond protocolVersion "0.3".
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  evidence: No deprecated:true anywhere in the OpenAPI; no Deprecation or Sunset header on any response.
+changelog:
+  url: null
+  evidence: /changelog 404; no dated entries anywhere on the site.
+status_page: null
+status_page_evidence: /status 404. No third-party status host is referenced.
+health:
+- url: https://www.easyfence.cn/healthz
+  status: 200
+  body: '{"status":"ok","store":"X402 AI 自助门店","payment_mode":"mainnet-real","network":"base","enabled_networks":["base","bsc"],"clerk":"fallback","issuer":"0x63D4b01ecba21a15c324559dd324928fe57b3Bbe"}'
+  note: >-
+    Reports live configuration, not just liveness: payment mode, primary and enabled networks, the
+    issuer address, and clerk "fallback" (the Hy3 LLM clerk the site advertises was not the active
+    responder at probe time).
+- url: https://www.easyfence.cn/facilitator/healthz
+  status: 200
+  body: '{"status":"ok","role":"x402-facilitator","networks":["base","base-sepolia","bsc","bsc-testnet"]}'
+sla:
+  url: null
+  public_uptime_target: null
+  notes: No SLA, terms or support commitment published. The home page's "7×24 挂机即营业" (open 24/7 while the machine is on) is marketing, not a commitment.
+support:
+  url: null
+  notes: No support, contact or issue channel is published anywhere on the site or in the agent card.
+third_party_listing:
+  registry: a2aregistry.org
+  note: The a2aregistry.org listing (fetched by the harvest on 2026-09-19) is the only external record of this agent; it points at the same /.well-known/agent.json.

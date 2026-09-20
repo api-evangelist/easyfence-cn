@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: X402 AI 自助门店 x402 Facilitator API
+  version: 1.0.0
+  description: 'The store operates its own x402 facilitator role (verify and settle) on the same host, advertised
+    in the 402 challenge as the facilitator for the BSC route (the Base route points at https://x402.org/facilitator).
+    /facilitator/healthz reports the networks it settles on: base, base-sepolia, bsc and bsc-testnet. The request
+    bodies are declared as free-form JSON objects; the x402 facilitator protocol defines their content.'
+  contact:
+    name: X402 AI 自助门店
+    url: https://www.easyfence.cn/
+  x-api-evangelist-provenance:
+    harvested: '2026-09-19'
+    method: searched
+    source: https://www.easyfence.cn/openapi.json
+    original: openapi/_original/easyfence-cn-openapi.json
+    note: Operations, operationIds, schemas and descriptions are verbatim from the FastAPI-generated document the
+      provider serves. API Evangelist added servers[] (the spec ships none; https://www.easyfence.cn is the host
+      that serves the document, the host the agent card and the x402 402 challenge both name as the resource), tags,
+      tag descriptions, info.description and info.contact. Nothing else was changed.
+servers:
+- url: https://www.easyfence.cn
+  description: Production (the only host; easyfence.cn serves the same application)
+paths:
+  /facilitator/healthz:
+    get:
+      summary: Facilitator Healthz
+      operationId: facilitator_healthz_facilitator_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Facilitator
+  /facilitator/verify:
+    post:
+      summary: Facilitator Verify
+      operationId: facilitator_verify_facilitator_verify_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Facilitator
+  /facilitator/settle:
+    post:
+      summary: Facilitator Settle
+      operationId: facilitator_settle_facilitator_settle_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Facilitator
+tags:
+- name: Facilitator
+  description: A self-hosted x402 facilitator (verify + settle) used for the BSC payment route; the Base route uses
+    https://x402.org/facilitator.
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

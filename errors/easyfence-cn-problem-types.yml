@@ -1,0 +1,86 @@
+generated: '2026-09-19'
+method: probed
+source:
+- openapi/easyfence-cn-store-api-openapi.yml (422 HTTPValidationError schema)
+- https://www.easyfence.cn/api/deliver
+- https://www.easyfence.cn/a2a
+- https://www.easyfence.cn/admin
+- https://www.easyfence.cn/.well-known/agent-card.json (404 shape)
+format: mixed
+format_note: >-
+  Not RFC 9457. Five different envelopes were observed on one host on 2026-09-19: FastAPI's
+  {"detail": ...} for framework errors (404, 405, 422), a flat {"error": "<message>", ...} for the store's
+  own validation, an x402 payment-requirements body on 402, JSON-RPC 2.0 error objects (over HTTP 400) on
+  the A2A endpoint, and an HTML hint on the admin 401. There is no published error reference. Messages are
+  in Chinese.
+envelopes:
+- surface: framework (FastAPI)
+  shape: '{detail: string | ValidationError[]}'
+  transport_status: 404 | 405 | 422
+- surface: store REST
+  shape: '{error: string, known?: string[]}'
+  transport_status: 400
+- surface: x402 gate
+  shape: '{x402Version: 1, error: "Payment required", accepts: PaymentRequirement[]}'
+  transport_status: 402
+  headers: 'accept: exact'
+- surface: a2a
+  shape: '{jsonrpc: "2.0", id, error: {code, message}}'
+  transport_status: 400
+  note: Application-level JSON-RPC errors arrive with HTTP 400 rather than 200. The error object carries code and message only, no data member.
+- surface: admin
+  shape: HTML fragment
+  transport_status: 401
+problems:
+- id: not-found
+  http_status: 404
+  surface: framework
+  message: '{"detail":"Not Found"}'
+  observed: every unknown path, including /.well-known/agent-card.json, /llms.txt, /robots.txt, /favicon.ico
+- id: method-not-allowed
+  http_status: 405
+  surface: framework
+  message: '{"detail":"Method Not Allowed"}'
+  headers: 'allow: GET'
+  observed: HEAD https://www.easyfence.cn/
+- id: validation-error
+  http_status: 422
+  surface: framework
+  schema: 'HTTPValidationError -> detail[] of ValidationError {loc: (string|integer)[], msg, type}'
+  declared_on: [facilitator_verify_facilitator_verify_post, facilitator_settle_facilitator_settle_post]
+  note: The only error response the OpenAPI declares anywhere; every other operation declares 200 only.
+- id: unknown-service
+  http_status: 400
+  surface: store REST
+  message: '{"error":"未知服务","known":["write_script","video_copy","tinyplace_landing","issue_erc8004","configure_a2a","ai_image_gen","lingzhi_copy"]}'
+  meaning: The service id is not in the catalog. The response lists every valid id, so the remediation is in the error itself.
+  observed: 'POST /api/deliver {}'
+  remediation: Pick an id from known[] (or GET /api/catalog) and resend.
+- id: payment-required
+  http_status: 402
+  surface: x402 gate
+  message: '{"x402Version":1,"error":"Payment required","accepts":[...]}'
+  meaning: The request is valid but unpaid. accepts[] tells the agent exactly what to pay (asset, amount, network, payTo, facilitator, 60-second timeout).
+  observed: 'POST /api/deliver {"service":"write_script","params":{"brief":"probe"}}'
+  remediation: Sign an EIP-3009 USDC authorization for one of the accepts[] entries and retry with the x402 payment header; the store settles and delivers in the same response.
+- id: fields-missing
+  http_status: 200
+  surface: store REST
+  message: '{"ok":false,"reason":"字段缺失"}'
+  meaning: Identity verification failed because required fields were absent. Note the HTTP status is 200 - failure is signalled in ok:false, not in the status code.
+  observed: 'POST /api/identity/verify {}'
+- id: jsonrpc-method-not-found
+  http_status: 400
+  surface: a2a
+  jsonrpc_code: -32601
+  message: '方法不存在: <method>'
+  observed: tasks/get, tools/list, nonexistent/method
+  note: The provider's example uses tasks/send; every other method name tried was refused with this code.
+- id: admin-token-required
+  http_status: 401
+  surface: admin
+  message: '<h2>需要口令</h2><p>访问 /admin?token=你的ADMIN_TOKEN</p>'
+  observed: GET /admin
+gaps:
+- The OpenAPI declares 200 as the only response on 18 of 20 operations; the 400, 402 and 401 behaviours above are undocumented in the contract and were learned only by calling it.
+- No request id / correlation header on any response.

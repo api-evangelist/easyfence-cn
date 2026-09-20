@@ -1,0 +1,110 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  openapi/easyfence-cn-store-api-openapi.yml, the agent card, the /a2a explainer page (the only
+  developer documentation the provider publishes), and live probes of /api/catalog, /api/deliver (402),
+  /api/identity/verify, /api/registry, /a2a and /healthz on 2026-09-19.
+description: >-
+  How the X402 AI 自助门店 surface behaves across calls: an anonymous JSON REST surface for discovery and
+  identity, an A2A JSON-RPC endpoint for negotiation, and one payment-gated write (POST /api/deliver)
+  whose gate is an x402 402 challenge settled in USDC on Base or BSC. The whole store is designed for an
+  AI buyer, so the runtime semantics an agent needs are the ones that matter.
+
+base_url: https://www.easyfence.cn
+api_style: JSON over HTTPS (FastAPI); A2A over JSON-RPC 2.0 at /a2a; x402 payment gate on /api/deliver
+surfaces:
+- name: Store REST
+  operations: [GET /api/catalog, POST /api/deliver, POST /api/identity/verify, POST /api/identity/issue, GET /api/registry, GET /healthz]
+  gated: /api/deliver only (x402 payment)
+- name: A2A endpoint
+  url: https://www.easyfence.cn/a2a
+  methods_documented: [tasks/send]
+  methods_refused: [tasks/get, tools/list, any other name -> -32601]
+  gated: false
+- name: x402 facilitator
+  operations: [GET /facilitator/healthz, POST /facilitator/verify, POST /facilitator/settle]
+  gated: false (bodies not exercised)
+- name: Admin console
+  operations: [/admin, /admin/config, /admin/revenue, /admin/services]
+  gated: true (ADMIN_TOKEN query parameter, 401 without it)
+
+authentication:
+  scheme: none on the public surface; x402 payment on /api/deliver; ERC-8004 identity presented as data; shared query token on /admin
+  detail: authentication/easyfence-cn-authentication.yml
+
+purchase_flow:
+  documented_at: https://www.easyfence.cn/a2a
+  steps:
+  - GET /.well-known/agent.json - discover the store and its 7 skills with price_usd.
+  - GET /api/catalog - the same 7 services plus the payment block (scheme x402, primary base, enabled_networks [base, bsc], per-network USDC asset addresses, payTo).
+  - 'POST /a2a tasks/send with a text part such as "我想买 write_script 服务，需求是：..." - optional negotiation with the clerk (not exercised in this pass).'
+  - 'POST /api/deliver {"service": "<id>", "params": {"brief": "<one-sentence requirement>"}, "buyer_agent"?: string} - without payment this returns 402 with accepts[].'
+  - Sign an EIP-3009 authorization for one accepts[] entry (Base USDC 6 decimals or BSC 18 decimals) and retry within maxTimeoutSeconds 60; the store settles through the named facilitator and returns the deliverable.
+  response_shape_documented_in_402: '{ok, order_id (random hex), service, amount_usd, tx_hash, deliverable_kind: text|html|json, deliverable}'
+
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  detail: >-
+    No Idempotency-Key header and no replay semantics are documented in the OpenAPI, the 402 body or the
+    /a2a page. The only write that costs money is POST /api/deliver; nothing states what happens if the same
+    signed payment authorization is presented twice. An EIP-3009 authorization carries its own nonce and can
+    be settled once on-chain, which limits double-charging at the settlement layer, but the store publishes
+    no statement about it and it was not tested (it would spend real USDC).
+
+dry_run:
+  supported: false
+  detail: >-
+    No test mode. /healthz reports payment_mode "mainnet-real" and /api/catalog enables only base and bsc
+    mainnets. The facilitator lists base-sepolia and bsc-testnet among its networks, but no testnet
+    requirement appears in the 402 challenge, so a buyer cannot rehearse a purchase. The 402 challenge
+    itself is a free preview of the price and terms - the closest thing to a dry run the surface offers.
+
+reversibility:
+  status: none
+  method: probed
+  derived_from: openapi/easyfence-cn-store-api-openapi.yml
+  docs: [https://www.easyfence.cn/a2a]
+  summary: >-
+    The one paid write, POST /api/deliver, has no reversal: there is no refund, cancel or void operation in
+    the 20-operation contract, and neither the /a2a page nor the 402 body mentions refunds or a window.
+    Settlement is an on-chain USDC transfer to the operator wallet, which the buyer cannot claw back. An
+    agent should treat every paid call as final and confirm the service id, brief and price (the 402
+    preview) before signing.
+  reversals: []
+  write_surface:
+  - {operation: api_deliver_api_deliver_post, reversal: none, window: none stated}
+  - {operation: identity_issue_api_identity_issue_post, reversal: none, note: issues a signed identity card; nothing revokes it}
+  - {operation: facilitator_settle_facilitator_settle_post, reversal: none, note: on-chain settlement}
+
+pagination:
+  style: none
+  detail: /api/catalog and /api/registry return complete arrays; no limit/offset/cursor anywhere.
+
+field_expansion: none
+metadata: none
+request_id:
+  header: none
+  detail: No request id or correlation header on any response; the 402 response body's documented order_id is the only per-transaction identifier and it is issued after payment.
+
+versioning:
+  scheme: none; info.version 1.0.0
+  detail: lifecycle/easyfence-cn-lifecycle.yml
+
+errors:
+  envelope: mixed - FastAPI {detail}, store {error, known[]}, x402 402 body, JSON-RPC error objects over HTTP 400
+  detail: errors/easyfence-cn-problem-types.yml
+
+rate_limits:
+  signaled: false
+  headers_observed: none (no RateLimit-*, X-RateLimit-* or Retry-After on any response)
+  detail: rate-limits/easyfence-cn-rate-limits.yml
+
+localisation:
+  language: Chinese (zh-CN) throughout - card names, descriptions, error messages and the explainer page; identifiers, JSON keys and the 402 body are English.
+
+observed_quirks:
+- The x402 bazaar extension example body in the 402 for write_script names service "ai_image_gen" and amount_usd 0.3 - the example is a template, not the requested service; read accepts[].maxAmountRequired, not the example.
+- POST /api/identity/verify signals failure with HTTP 200 and ok:false.
+- The A2A endpoint returns JSON-RPC errors over HTTP 400.

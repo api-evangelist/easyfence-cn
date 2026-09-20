@@ -1,0 +1,102 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  openapi/easyfence-cn-store-api-openapi.yml declares only HTTPValidationError / ValidationError, so the
+  entities below are read from the live response bodies of /api/catalog, /api/registry, /healthz and the
+  /api/deliver 402 challenge (2026-09-19) and from the agent card. Field names are the provider's; nothing
+  is inferred beyond what a response carried.
+summary: >-
+  A tiny model: a Store sells Services, each priced in USD; a purchase produces a PaymentRequirement (from
+  the 402) and, once settled, an Order with a Deliverable. Identity is a separate branch: the Store is an
+  Issuer that signs IdentityCards for Agents and lists them in a TrustRegistry. No ids are exposed for
+  anything except services (a slug) and orders (a random hex, per the 402 example).
+id_style:
+  format: 'service ids are snake_case slugs (write_script); order_id is described as random hex; agents and issuers are EVM addresses (0x...)'
+  prefixes_published: false
+entities:
+- name: Store
+  sources:
+  - /healthz
+  - agent card provider
+  fields: [store, payment_mode, network, enabled_networks, clerk, issuer]
+  relationships:
+  - has_many: Service
+  - has_one: TrustRegistry
+  - has_one: PaymentConfig
+    via: /api/catalog payment
+- name: Service
+  sources:
+  - '/api/catalog services[]'
+  - 'agent card skills[]'
+  fields: [id, name, desc, price_usd]
+  card_fields: [id, name, description, tags, examples, price_usd]
+  relationships:
+  - belongs_to: Store
+  - has_many: PaymentRequirement
+    via: '402 accepts[] for resource /api/deliver'
+- name: PaymentConfig
+  sources:
+  - /api/catalog payment
+  fields:
+  - scheme
+  - primary
+  - enabled_networks
+  - 'assets {network: asset_address}'
+  - payTo
+- name: PaymentRequirement
+  sources:
+  - 'POST /api/deliver 402 accepts[]'
+  fields:
+  - scheme
+  - network
+  - chainId
+  - maxAmountRequired
+  - resource
+  - description
+  - mimeType
+  - payTo
+  - maxTimeoutSeconds
+  - asset
+  - facilitator
+  - 'extra {name, version}'
+  - extensions.bazaar
+  relationships:
+  - belongs_to: Service
+    via: description + maxAmountRequired
+- name: Order
+  sources:
+  - 402 bazaar output example
+  fields: [ok, order_id, service, amount_usd, tx_hash, deliverable_kind, deliverable]
+  relationships:
+  - belongs_to: Service
+    via: service
+  - has_one: Deliverable
+    via: 'deliverable (text | html | json)'
+  note: Shape read from the provider's own example in the 402 body; no order was placed.
+- name: TrustRegistry
+  sources:
+  - /api/registry
+  fields:
+  - registry
+  - issuer
+  - 'trusted_issuers[]'
+  - count
+  - 'agents[]'
+  relationships:
+  - belongs_to: Store
+  - has_many: Agent
+    via: 'agents[]'
+- name: IdentityCard
+  sources:
+  - agent card auth.identity erc8004
+  - /api/identity/issue and /api/identity/verify descriptions
+  fields: unknown - the verify endpoint answered "fields missing" to an empty body and the contract declares no schema
+  relationships:
+  - belongs_to: Agent
+  - signed_by: Issuer
+    via: EIP-712
+- name: Agent
+  sources:
+  - '/api/registry agents[] (empty)'
+  - /api/deliver buyer_agent
+  fields: [address]

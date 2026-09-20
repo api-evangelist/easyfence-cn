@@ -1,0 +1,47 @@
+generated: '2026-09-19'
+method: probed
+source: live GET of the named /.well-known/ path list on both hosts this record knows (www.easyfence.cn and the apex easyfence.cn; both resolve to 156.233.232.132 and serve the same FastAPI application behind nginx/1.20.1)
+hit_count: 0
+note: >-
+  Every named discovery path returned 404 with the FastAPI {"detail":"Not Found"} JSON body on both hosts,
+  and a negative-control path returned the same 404, so these are true absences rather than a catch-all.
+  No WellKnown or SecurityTxt pointer is emitted: this file records an absence. The one /.well-known/
+  document the host DOES serve is the A2A agent card at the legacy path /.well-known/agent.json (200
+  application/json on both hosts); it is recorded and graded in a2a/easyfence-cn-a2a.yml rather than
+  counted here. No MCP host exists to probe (no MCP server is published; tools/list on /a2a returns
+  JSON-RPC -32601), and no fetched document names an authorization server, so the host set is complete.
+  robots.txt, llms.txt, apis.json and sitemap.xml are also absent.
+hosts:
+- host: https://www.easyfence.cn
+  path_echo_control: passed
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /.well-known/ai.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 200, note: 'A2A agent card, application/json, 3454 bytes - graded in a2a/easyfence-cn-a2a.yml, not counted as a well-known hit'}
+  - {path: /apis.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /robots.txt, status: 404}
+  - {path: /sitemap.xml, status: 404}
+  - {path: /.well-known/easyfence-cn-negative-control-7f3a9c.json, status: 404, note: negative control}
+- host: https://easyfence.cn
+  path_echo_control: passed
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 200, note: identical agent card body to www}
+  - {path: /apis.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /robots.txt, status: 404}

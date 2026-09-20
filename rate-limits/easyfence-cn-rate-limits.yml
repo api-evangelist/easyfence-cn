@@ -1,0 +1,25 @@
+generated: '2026-09-19'
+method: probed
+source:
+- https://www.easyfence.cn/openapi.json
+- https://www.easyfence.cn/a2a
+- response headers observed on GET /, GET /api/catalog, POST /api/deliver (402), POST /a2a (400)
+docs: null
+limit_count: 0
+note: >-
+  No rate limit is documented anywhere - not in the OpenAPI, the agent card, the /a2a explainer or the 402
+  body - and no rate-limit signal was observed on any response: no RateLimit-*, X-RateLimit-* or
+  Retry-After header, and no 429 was encountered. The responses carry only nginx/1.20.1 Server, Date,
+  Content-Type, Content-Length and Connection (plus "accept: exact" on the 402 and "allow: GET" on the 405).
+  The only throttle the surface publishes is economic: every delivery costs 0.30-2.00 USD, settled before
+  the work is done, and the 402 challenge's maxTimeoutSeconds 60 bounds how long a quoted payment stays valid.
+headers:
+  observed: []
+  rate_limit: null
+  retry_after: null
+response_codes:
+  throttled: null
+limits: []
+economic_gate:
+  per_call_usd: 0.30 - 2.00 (plans/easyfence-cn-plans-pricing.yml)
+  quote_validity_seconds: 60
