@@ -19,6 +19,16 @@ specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
+- Agentic Commerce
+- AI Agents
+- A2A
+- x402
+- Payments
+- Stablecoins
+- Agent Identity
+- Content Generation
+- Web3
+tags_raw:
 - Agent Commerce
 - AI Agents
 - A2A
@@ -40,6 +50,12 @@ apis:
   humanURL: https://www.easyfence.cn/docs
   baseURL: https://www.easyfence.cn
   tags:
+  - Agentic Commerce
+  - x402
+  - Payments
+  - Agent Identity
+  - Content Generation
+  tags_raw:
   - Agent Commerce
   - x402
   - Payments
@@ -88,6 +104,11 @@ apis:
   humanURL: https://www.easyfence.cn/a2a
   baseURL: https://www.easyfence.cn/a2a
   tags:
+  - A2A
+  - Agentic Commerce
+  - JSON-RPC
+  - AI Agents
+  tags_raw:
   - A2A
   - Agent Commerce
   - JSON-RPC
