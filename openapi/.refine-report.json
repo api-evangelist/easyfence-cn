@@ -1,0 +1,62 @@
+{
+  "provider": "easyfence-cn",
+  "sources": [
+    "_original/easyfence-cn-openapi.json"
+  ],
+  "outputs": [
+    "easyfence-cn-well-known-api-openapi.yml",
+    "easyfence-cn-a2a-api-openapi.yml",
+    "easyfence-cn-admin-api-openapi.yml",
+    "easyfence-cn-catalog-api-openapi.yml",
+    "easyfence-cn-deliver-api-openapi.yml",
+    "easyfence-cn-facilitator-api-openapi.yml",
+    "easyfence-cn-healthz-api-openapi.yml",
+    "easyfence-cn-identity-api-openapi.yml",
+    "easyfence-cn-registry-api-openapi.yml",
+    "easyfence-cn-x402-ai-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "easyfence-cn-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "easyfence-cn-openapi.json: tagged paths GET /healthz -> Healthz",
+    "easyfence-cn-openapi.json: tagged paths GET / -> X402 AI \u81ea\u52a9\u95e8\u5e97",
+    "easyfence-cn-openapi.json: tagged paths GET /.well-known/agent.json -> .well Known",
+    "easyfence-cn-openapi.json: tagged paths GET /a2a -> A2a",
+    "easyfence-cn-openapi.json: tagged paths POST /a2a -> A2a",
+    "easyfence-cn-openapi.json: tagged paths GET /api/catalog -> Catalog",
+    "easyfence-cn-openapi.json: tagged paths POST /api/deliver -> Deliver",
+    "easyfence-cn-openapi.json: tagged paths POST /api/identity/verify -> Identity",
+    "easyfence-cn-openapi.json: tagged paths POST /api/identity/issue -> Identity",
+    "easyfence-cn-openapi.json: tagged paths GET /api/registry -> Registry",
+    "easyfence-cn-openapi.json: tagged paths GET /admin -> Admin",
+    "easyfence-cn-openapi.json: tagged paths GET /admin/config -> Admin",
+    "easyfence-cn-openapi.json: tagged paths POST /admin/config -> Admin",
+    "easyfence-cn-openapi.json: tagged paths GET /admin/revenue -> Admin",
+    "easyfence-cn-openapi.json: tagged paths GET /admin/services -> Admin",
+    "easyfence-cn-openapi.json: tagged paths POST /admin/services -> Admin",
+    "easyfence-cn-openapi.json: tagged paths GET /facilitator/healthz -> Facilitator",
+    "easyfence-cn-openapi.json: tagged paths POST /facilitator/verify -> Facilitator",
+    "easyfence-cn-openapi.json: tagged paths POST /facilitator/settle -> Facilitator",
+    "easyfence-cn-openapi.json: declared missing tag: .well Known",
+    "easyfence-cn-openapi.json: declared missing tag: A2a",
+    "easyfence-cn-openapi.json: declared missing tag: Admin",
+    "easyfence-cn-openapi.json: declared missing tag: Catalog",
+    "easyfence-cn-openapi.json: declared missing tag: Deliver",
+    "easyfence-cn-openapi.json: declared missing tag: Facilitator",
+    "easyfence-cn-openapi.json: declared missing tag: Healthz",
+    "easyfence-cn-openapi.json: declared missing tag: Identity",
+    "easyfence-cn-openapi.json: declared missing tag: Registry",
+    "easyfence-cn-openapi.json: declared missing tag: X402 AI \u81ea\u52a9\u95e8\u5e97",
+    "superseded outputs removed: easyfence-cn-store-api-openapi.yml",
+    "apis.yml register: written (+9 apis, 11 total)"
+  ],
+  "skipped": [
+    "easyfence-cn-facilitator-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-store-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

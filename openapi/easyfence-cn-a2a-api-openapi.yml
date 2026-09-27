@@ -1,0 +1,34 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 A2a API
+  version: 1.0.0
+tags:
+- name: A2a
+paths:
+  /a2a:
+    get:
+      summary: A2A Info
+      description: '人类浏览器访问 /a2a 时返回友好说明页（A2A Registry 里的链接会被人类点击）。
+
+        AI 代理仍然用 POST /a2a 走 JSON-RPC。'
+      operationId: a2a_info_a2a_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - A2a
+    post:
+      summary: A2A Endpoint
+      operationId: a2a_endpoint_a2a_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - A2a

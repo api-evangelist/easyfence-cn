@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 Registry API
+  version: 1.0.0
+tags:
+- name: Registry
+paths:
+  /api/registry:
+    get:
+      summary: Registry
+      description: '本店 ERC-8004 信任注册表（公开）：其它 AI 可在此发现本店认证过的 agent。
+
+        相当于把"已办身份证的 AI"登记进一张可被检索的黄页。'
+      operationId: registry_api_registry_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Registry

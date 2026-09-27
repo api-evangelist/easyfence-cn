@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 Deliver API
+  version: 1.0.0
+tags:
+- name: Deliver
+paths:
+  /api/deliver:
+    post:
+      summary: Api Deliver
+      description: 受 x402 收银门禁保护的服务交付接口。
+      operationId: api_deliver_api_deliver_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Deliver

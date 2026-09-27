@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 Admin API
+  version: 1.0.0
+tags:
+- name: Admin
+paths:
+  /admin:
+    get:
+      summary: Admin Page
+      operationId: admin_page_admin_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+  /admin/config:
+    get:
+      summary: Admin Config Get
+      operationId: admin_config_get_admin_config_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+    post:
+      summary: Admin Config Post
+      operationId: admin_config_post_admin_config_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin
+  /admin/revenue:
+    get:
+      summary: Admin Revenue
+      operationId: admin_revenue_admin_revenue_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+  /admin/services:
+    get:
+      summary: Admin Services Page
+      operationId: admin_services_page_admin_services_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+      tags:
+      - Admin
+    post:
+      summary: Admin Services Post
+      operationId: admin_services_post_admin_services_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Admin

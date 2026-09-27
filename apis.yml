@@ -39,67 +39,13 @@ tags_raw:
 - Content Generation
 - Web3
 apis:
-- aid: easyfence-cn:easyfence-cn-store-api
-  name: X402 AI 自助门店 Store API
-  description: >-
-    The store's public JSON surface: the service catalog with USD prices and the x402 payment block
-    (GET /api/catalog), the payment-gated delivery endpoint (POST /api/deliver, 402 until a USDC
-    authorization is presented), ERC-8004 style identity verification and issuance, the public trust
-    registry, health, and the A2A agent card. Anonymous except for payment; FastAPI-generated OpenAPI 3.1.0
-    with 20 operations, 4 of which are a token-gated admin console.
-  humanURL: https://www.easyfence.cn/docs
-  baseURL: https://www.easyfence.cn
-  tags:
-  - Agentic Commerce
-  - x402
-  - Payments
-  - Agent Identity
-  - Content Generation
-  tags_raw:
-  - Agent Commerce
-  - x402
-  - Payments
-  - Agent Identity
-  - Content Generation
-  properties:
-  - type: OpenAPI
-    url: openapi/easyfence-cn-store-api-openapi.yml
-  - type: OpenAPI
-    url: https://www.easyfence.cn/openapi.json
-  - type: APIReference
-    url: https://www.easyfence.cn/docs
-  - type: Documentation
-    url: https://www.easyfence.cn/a2a
-  - type: Overlay
-    url: overlays/easyfence-cn-store-api-overlay.yaml
-  - type: Authentication
-    url: authentication/easyfence-cn-authentication.yml
-  - type: Conventions
-    url: conventions/easyfence-cn-conventions.yml
-  - type: ErrorCatalog
-    url: errors/easyfence-cn-problem-types.yml
-  - type: DataModel
-    url: data-model/easyfence-cn-data-model.yml
-  - type: Plans
-    url: plans/easyfence-cn-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/easyfence-cn-rate-limits.yml
-  - type: Conformance
-    url: conformance/easyfence-cn-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/easyfence-cn-lifecycle.yml
-  - type: MCPServer
-    url: mcp/easyfence-cn-mcp.yml
-  - type: AgentSkill
-    url: skills/_index.yml
-  overlays: []
 - aid: easyfence-cn:easyfence-cn-a2a-agent
   name: X402 AI 自助门店 A2A Agent
   description: >-
     The store's agent-to-agent surface: an anonymous A2A 0.3 JSON-RPC endpoint the agent card points at,
     where a buyer agent negotiates with the store clerk before ordering. The provider's documented method
-    is tasks/send with a text part; tasks/get, tools/list and any other method return JSON-RPC -32601 over
-    HTTP 400. No streaming or push notifications. The card is served at the legacy /.well-known/agent.json
+    is tasks/send with a text part; tasks/get, tools/list and any other method return JSON-RPC -32601
+    over HTTP 400. No streaming or push notifications. The card is served at the legacy /.well-known/agent.json
     path only and declares seven skills, each carrying price_usd and the tags ai-service, x402, auto-pay.
   humanURL: https://www.easyfence.cn/a2a
   baseURL: https://www.easyfence.cn/a2a
@@ -128,11 +74,11 @@ apis:
 - aid: easyfence-cn:easyfence-cn-x402-facilitator-api
   name: X402 AI 自助门店 x402 Facilitator API
   description: >-
-    A self-hosted x402 facilitator role on the same host - POST /facilitator/verify and POST
-    /facilitator/settle with free-form JSON bodies, plus /facilitator/healthz reporting the networks it
-    settles on (base, base-sepolia, bsc, bsc-testnet). The store's 402 challenge names it as the facilitator
-    for the BSC route; the Base route uses https://x402.org/facilitator. The verify/settle bodies were not
-    exercised because they move money.
+    A self-hosted x402 facilitator role on the same host - POST /facilitator/verify and POST /facilitator/settle
+    with free-form JSON bodies, plus /facilitator/healthz reporting the networks it settles on (base,
+    base-sepolia, bsc, bsc-testnet). The store's 402 challenge names it as the facilitator for the BSC
+    route; the Base route uses https://x402.org/facilitator. The verify/settle bodies were not exercised
+    because they move money.
   humanURL: https://www.easyfence.cn/docs
   baseURL: https://www.easyfence.cn/facilitator
   tags:
@@ -152,6 +98,276 @@ apis:
   - type: ErrorCatalog
     url: errors/easyfence-cn-problem-types.yml
   overlays: []
+- aid: easyfence-cn:easyfence-cn-a2a-api
+  name: X402 AI 自助门店 A2a API
+  description: The A2a API from X402 AI 自助门店 — 1 operation(s) for a2a.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - A2a
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-a2a-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-admin-api
+  name: X402 AI 自助门店 Admin API
+  description: The Admin API from X402 AI 自助门店 — 4 operation(s) for admin.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-admin-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-catalog-api
+  name: X402 AI 自助门店 Catalog API
+  description: The Catalog API from X402 AI 自助门店 — 1 operation(s) for catalog.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-catalog-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-deliver-api
+  name: X402 AI 自助门店 Deliver API
+  description: The Deliver API from X402 AI 自助门店 — 1 operation(s) for deliver.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Deliver
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-deliver-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-healthz-api
+  name: X402 AI 自助门店 Healthz API
+  description: The Healthz API from X402 AI 自助门店 — 1 operation(s) for healthz.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Healthz
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-healthz-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-identity-api
+  name: X402 AI 自助门店 Identity API
+  description: The Identity API from X402 AI 自助门店 — 2 operation(s) for identity.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-identity-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-registry-api
+  name: X402 AI 自助门店 Registry API
+  description: The Registry API from X402 AI 自助门店 — 1 operation(s) for registry.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - Registry
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-registry-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-well-known-api
+  name: X402 AI 自助门店 .well Known API
+  description: The .well Known API from X402 AI 自助门店 — 1 operation(s) for .well known.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - .well Known
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-well-known-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
+- aid: easyfence-cn:easyfence-cn-x402-ai-api
+  name: X402 AI 自助门店 X402 AI 自助门店 API
+  description: The X402 AI 自助门店 API from X402 AI 自助门店 — 1 operation(s) for x402 ai 自助门店.
+  humanURL: https://www.easyfence.cn/docs
+  baseURL: https://www.easyfence.cn/a2a
+  tags:
+  - X402 AI 自助门店
+  properties:
+  - type: OpenAPI
+    url: openapi/easyfence-cn-x402-ai-api-openapi.yml
+  - type: APIReference
+    url: https://www.easyfence.cn/docs
+  - type: Documentation
+    url: https://www.easyfence.cn/a2a
+  - type: Authentication
+    url: authentication/easyfence-cn-authentication.yml
+  - type: Conventions
+    url: conventions/easyfence-cn-conventions.yml
+  - type: ErrorCatalog
+    url: errors/easyfence-cn-problem-types.yml
+  - type: DataModel
+    url: data-model/easyfence-cn-data-model.yml
+  - type: Plans
+    url: plans/easyfence-cn-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/easyfence-cn-rate-limits.yml
+  - type: Conformance
+    url: conformance/easyfence-cn-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/easyfence-cn-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -203,3 +419,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 22
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://www.easyfence.cn/.well-known/agent.json"
+  grade: "conformant"
+  protocol_version: "0.3.0"
+  control: 404

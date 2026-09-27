@@ -1,0 +1,32 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 Identity API
+  version: 1.0.0
+tags:
+- name: Identity
+paths:
+  /api/identity/verify:
+    post:
+      summary: Identity Verify
+      operationId: identity_verify_api_identity_verify_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Identity
+  /api/identity/issue:
+    post:
+      summary: Identity Issue
+      description: 演示用：给某个 agent 地址签发一张 ERC-8004 身份卡（本店 issuer 签名）。
+      operationId: identity_issue_api_identity_issue_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Identity

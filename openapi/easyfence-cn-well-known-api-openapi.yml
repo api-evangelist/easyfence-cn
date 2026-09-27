@@ -1,0 +1,20 @@
+openapi: 3.2.0
+info:
+  title: X402 AI 自助门店 .well Known API
+  version: 1.0.0
+tags:
+- name: .well Known
+paths:
+  /.well-known/agent.json:
+    get:
+      summary: Agent Card
+      description: AgentCard 招牌：机器优先，但浏览器打开也做缩进，方便人类检查。
+      operationId: agent_card__well_known_agent_json_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - .well Known
