@@ -15,9 +15,7 @@
     "easyfence-cn-registry-api-openapi.yml",
     "easyfence-cn-x402-ai-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -52,11 +50,18 @@
     "easyfence-cn-openapi.json: declared missing tag: Identity",
     "easyfence-cn-openapi.json: declared missing tag: Registry",
     "easyfence-cn-openapi.json: declared missing tag: X402 AI \u81ea\u52a9\u95e8\u5e97",
-    "superseded outputs removed: easyfence-cn-store-api-openapi.yml",
-    "apis.yml register: written (+9 apis, 11 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
+    "easyfence-cn-a2a-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-admin-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-deliver-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "easyfence-cn-facilitator-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "easyfence-cn-store-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "easyfence-cn-healthz-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-identity-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-registry-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-well-known-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "easyfence-cn-x402-ai-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
