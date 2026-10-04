@@ -104,6 +104,8 @@ apis:
   humanURL: https://www.easyfence.cn/docs
   baseURL: https://www.easyfence.cn/a2a
   tags:
+  - A2A
+  tags_raw:
   - A2a
   properties:
   - type: OpenAPI
