@@ -70,3 +70,59 @@ notes: >-
   No pricing page exists as such (/pricing 404); the home page's services section and the machine catalog
   are the published prices. No enterprise or contact-sales tier. Prices are quoted in USD and settled in
   USDC 1:1.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: 代写脚本 (write a script)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: 视频文案生成 (short-video copy)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: tiny.place 落地页 (landing page)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: 办理 AI 链上身份证 ERC-8004 (issue an ERC-8004 identity card)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: 配置 A2A 接入能力 (A2A onboarding)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: AI 图像生成 (image prompts)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: 灵芝养生文案 (lingzhi wellness copy)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
