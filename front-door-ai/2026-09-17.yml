@@ -1,0 +1,29 @@
+# Front Door AI Index — easyfence-cn — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: easyfence-cn
+  lexicon_version: '1.0'
+  probed_at: '2026-09-25'
+  host: www.easyfence.cn
+  final_host: www.easyfence.cn
+  ownership: own
+  owner: easyfence-cn
+  shares_host_with: null
+  inherited_from: null
+  alias_of: null
+  verdict: scored
+  score: 29
+  band: 6
+  band_label: dominant
+  host_score: 29
+  density: 145.0
+  words: 200
+  tiers:
+    agentic: 0
+    core: 29
+    model: 0
+  ambiguous: 2
+  top_terms:
+    AI: 29
+    agent: 2
